@@ -3,7 +3,8 @@ const ctx = canvas.getContext("2d");
 
 const WIDTH = 800;
 const HEIGHT = 800;
-const POINT_SIZE = 10;
+let dz = 3;
+let dtheta = 0;
 const BACKGROUND = "#383838"
 const TARGET_FPS = 60;
 
@@ -37,6 +38,10 @@ const project_to_screen = ({ x, y, z }) => (
  * @returns {void}
 */
 const drawPoint = (p) => {
+
+    let POINT_SIZE = 0
+    if (dz > 0)
+        POINT_SIZE = 10 / dz;
     ctx.fillStyle = "green";
     const { x, y } = project_to_screen(p);
     ctx.fillRect(x - POINT_SIZE / 2, y - POINT_SIZE / 2, POINT_SIZE, POINT_SIZE);
@@ -110,15 +115,15 @@ const clear_background = () => {
 
 
 const points = [
-    { x: -0.75, y: 0.75, z: 0 },
-    { x: 0.75, y: 0.75, z: 0 },
-    { x: -0.75, y: -0.75, z: 0 },
-    { x: 0.75, y: -0.75, z: 0 },
+    { x: -0.50, y: 0.50, z: -0.5 },
+    { x: 0.50, y: 0.50, z: -0.5 },
+    { x: -0.50, y: -0.50, z: -0.5 },
+    { x: 0.50, y: -0.50, z: -0.5 },
 
-    { x: -0.75, y: 0.75, z: 1 },
-    { x: 0.75, y: 0.75, z: 1 },
-    { x: -0.75, y: -0.75, z: 1 },
-    { x: 0.75, y: -0.75, z: 1 },
+    { x: -0.50, y: 0.50, z: 0.5 },
+    { x: 0.50, y: 0.50, z: 0.5 },
+    { x: -0.50, y: -0.50, z: 0.5 },
+    { x: 0.50, y: -0.50, z: 0.5 },
 ]
 
 // Clockwise winding order
@@ -131,14 +136,11 @@ const meshArr = [
     },
 ]
 
-let dz = 2;
-let dtheta = 0;
-
 const frame = () => {
     const dt = 1 / TARGET_FPS;
     clear_background();
-    dz += dt * 0.25;
-    dtheta += dt * 2 * Math.PI / 4;
+    //dz += dt * 1;
+    dtheta += dt * 2 * Math.PI;
 
     const meshArr = [
         {
